@@ -11,3 +11,8 @@
 ### Разработка 
 Разработка ведется в двух ветках - **preparation** и **forecast** <br />
 Ветка **master** содержит production версию
+
+### Импорт методов 
+```
+source('preparation.R')
+```
