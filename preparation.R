@@ -31,7 +31,7 @@ ErrorHandle <- setRefClass('Errors',
         errors <<- list.append(errors, list(
           time = getTime(),
           msg = message,
-          additioanl = extra
+          additional = extra
         ))
         time$last <<- getTime()
         isNeedToSave()
