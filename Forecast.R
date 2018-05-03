@@ -1,4 +1,5 @@
 library(dplyr)
+library(lubridate)
 #Агрегация по неделям продаж товара 'ItemName'  на АЗС 'DPtName'
 #names(SalesTable)     "DEPT" "SKU"  "DATE" "QNT" 
 WeekDataSales = function(SalesTable,ItemName,DptName) {
