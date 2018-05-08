@@ -33,3 +33,17 @@ WeekDataSales = function(SalesTable,ItemName,DptName) {
   a$WeekInd<-c(1:length(a$WeekInd))
   a
 }
+
+#Агрегация по месяцам продаж товара 'ItemName'  на АЗС 'DPtName'
+#names(SalesTable)     "DEPT" "SKU"  "DATE" "QNT" 
+MonthDataSales = function(SalesTable,ItemName,DptName) {
+  a<-SalesTable %>%
+    filter(DEPT==DeptName,SKU==ItemName)
+  a<-a %>%
+    mutate(year=year(a$DATE),month=month(a$DATE)) %>%
+    group_by(DEPT,SKU,year,month) %>%
+    summarise(MonthQnt=sum(QNT)) %>%
+    mutate(MonthInd='1') 
+  a$MonthInd<-c(1:length(a$MonthInd))
+  a
+}
