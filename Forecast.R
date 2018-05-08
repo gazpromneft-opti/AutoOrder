@@ -11,6 +11,21 @@ Prep.Sales.Data = function(SalesCSV){
   salesP_df
 }
 
+#Фильтр по дням продаж товара 'ItemName'  на АЗС 'DPtName'
+#names(SalesTable)     "DEPT" "SKU"  "DATE" "QNT" 
+DailyDataSales = function(SalesTable,ItemName,DptName) {
+  a<-SalesTable %>%
+    filter(DEPT==DeptName,SKU==ItemName)
+  a<-a %>%
+    mutate(year=year(a$DATE),month=month(a$DATE)) %>%
+    group_by(DEPT,SKU,year,month) %>%
+    arrange(year, month, DATE) %>%
+    mutate(DailyInd='1') 
+  a$DailyInd<-c(1:length(a$DailyInd))
+  a
+}
+
+
 #Для анализа по неделям придется убирать 53ю неделю, так как 1 января - всегда первая неделя
 #Агрегация по неделям продаж товара 'ItemName'  на АЗС 'DPtName'
 #names(SalesTable)     "DEPT" "SKU"  "DATE" "QNT" 
