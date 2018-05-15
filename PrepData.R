@@ -11,6 +11,25 @@ Prep.Sales.Data = function(SalesCSV){
   salesP_df
 }
 
+#Исправление выбросов
+vybros = function(data){
+  x<-data$DATE
+  y<-data$QNT
+  # Заберём индексы точек выбросов
+  ind <- which(y %in% boxplot.stats(y)$out)
+  # Сохраним координаты точек выбросов в отдельном dataframe
+  vybrosy <- data.frame(x=x[ind], y=y[ind])
+  ymaxim<-max(y)
+  for (i in ind)
+  { y[i]<-mean(y[(i-5):(i+5)])
+  }
+  plot(x,y,col='blue', pch=16, ylim=c(0,ymaxim),type='l')
+  points(vybrosy$x, vybrosy$y, pch=16, col='red')
+  y->data$QNT
+  data
+}
+
+
 #Фильтр по дням продаж товара 'ItemName'  на АЗС 'DPtName'
 #names(SalesTable)     "DEPT" "SKU"  "DATE" "QNT" 
 DailyDataSales = function(SalesTable,ItemName,DptName) {
