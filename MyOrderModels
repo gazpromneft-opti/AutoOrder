@@ -1,0 +1,37 @@
+#arima
+library(forecast)
+library(smooth)
+myarima = function(DDS,goriz,Test.len,real.graph,smooth.graph){
+  source("PrepData.R")
+  vvv<-vybros.values(DDS)
+  ymaxim<-max(DDS$QNT)
+  DDS<-vybros.corr(DDS)
+  End.train<-length(DDS$QNT)-Test.len
+  DDS.train <-DDS[1:End.train,]
+  DDS.test<-DDS[(End.train+1):(End.train+Test.len),]
+  DDS.testonly<-DDS$QNT;DDS.testonly[1:End.train]<-NA;
+  DDS.train.ts <- ts(DDS.train$QNT)
+  DDS.arima<- auto.arima(DDS.train.ts)
+  fore <- forecast(DDS.arima, h=goriz)
+  fore.values<-as.vector(round(fore$mean))
+  DDS.foreonly<-DDS$QNT;DDS.foreonly[1:End.train]<-NA;DDS.foreonly[(End.train+1):(End.train+Test.len)]<-fore.values[1:min(goriz,Test.len)];
+
+  if (real.graph=='yes') {
+  plot(fore,ylim=c(0,ymaxim))
+  points(vvv$xv, vvv$yv, pch=16, col='red') 
+  lines(fitted(fore),col='red')
+  lines(DDS.testonly)
+  }  
+  if (smooth.graph=='yes') 
+  {
+  plot(TTR::SMA(DDS$QNT,7),ylim=c(0,ymaxim),type='l',main='smooth data')
+  points(vvv$xv, vvv$yv, pch=16, col='red')  
+  lines(fitted(fore),col='red')
+  lines(DDS.foreonly,col='blue')
+  }
+  #summary(DDS.arima)
+  #Mean Absolute Percentage Error in Percentage
+  MyMape<-MAPE(DDS$QNT[(End.train+1):(End.train+min(goriz,Test.len))],fore.values[1:min(goriz,Test.len)],digits=5)*100
+  print(c('Mean Absolute Percentage Error = ', MyMape))
+  c(fore.values,MyMape)
+}
