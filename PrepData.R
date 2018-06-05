@@ -40,7 +40,7 @@ DailyDataSales = function(SalesTable,ItemName,DptName) {
     group_by(DEPT,SKU,year,month) %>%
     arrange(year, month, DATE) %>%
     mutate(DailyInd='1') 
-  a$DailyInd<-c(1:length(a$DailyInd))
+  a$DailyInd<-1:length(a$DailyInd)
   a
 }
 
@@ -64,7 +64,7 @@ WeekDataSales = function(SalesTable,ItemName,DptName) {
   a[a$week==52 & a$year==2016,"WeekQnt"]<-a[a$week==52 & a$year==2016,"WeekQnt"] + ceiling(a[a$week==53 & a$year==2016,"WeekQnt"]/2)
   a[a$week==1 & a$year==2017,"WeekQnt"]<-a[a$week==1 & a$year==2017,"WeekQnt"] + floor(a[a$week==53 & a$year==2016,"WeekQnt"]/2)
   a<-a[a$week !=53,] 
-  a$WeekInd<-c(1:length(a$WeekInd))
+  a$WeekInd<-1:length(a$WeekInd)
   a
 }
 
@@ -78,6 +78,6 @@ MonthDataSales = function(SalesTable,ItemName,DptName) {
     group_by(DEPT,SKU,year,month) %>%
     summarise(MonthQnt=sum(QNT)) %>%
     mutate(MonthInd='1') 
-  a$MonthInd<-c(1:length(a$MonthInd))
+  a$MonthInd<-1:length(a$MonthInd)
   a
 }
