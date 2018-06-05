@@ -172,7 +172,7 @@ get.fore.values = function(DDS,first.date,q, mymodel,  weatherCSV){
     else{
       print('without weather')
       DS.train.lr <- data.frame(DATE=DDS.train$DATE, QNT=DDS.train$QNT, months.train,weeks.train)
-      DS.test.lr <- data.frame(DATE=DATE.fore, months.test,weeks.test)
+      DS.test.lr <- data.frame(DATE=DATE.fore, months.fore,weeks.fore)
       reg.train <- lm(QNT~DATE+X1+X2+X3+X4+X5+X6+X7+X9+X10+X11+W1+W2+W3+W4+W5+W6,DS.train.lr)
       fore.values=predict.lm(reg.train,DS.test.lr)
     }
